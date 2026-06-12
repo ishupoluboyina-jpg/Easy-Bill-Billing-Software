@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Account</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.form-box{
+width:450px;
+margin:30px auto;
+padding:25px;
+background:white;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+.form-box input,.form-box button{
+width:100%;
+padding:10px;
+margin:8px 0;
+}
+.captcha{
+background:#eee;
+padding:10px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="form-box">
+
+<h2>Create Account</h2>
+
+<input type="text" id="name" placeholder="Full Name">
+
+<input type="tel" id="phone" placeholder="Phone Number">
+
+<button onclick="sendPhoneOTP()">Send Phone OTP</button>
+
+<input type="text" id="phoneOtp" placeholder="Enter Phone OTP">
+
+<button onclick="verifyPhoneOTP()">Verify Phone OTP</button>
+
+<p id="phoneStatus"></p>
+
+<input type="email" id="email" placeholder="Email">
+
+<button onclick="sendEmailOTP()">Send Email OTP</button>
+
+<input type="text" id="emailOtp" placeholder="Enter Email OTP">
+
+<button onclick="verifyEmailOTP()">Verify Email OTP</button>
+
+<p id="emailStatus"></p>
+
+<input type="email" id="verifyEmail" placeholder="Verify Email">
+
+<input type="password" id="password" placeholder="Password">
+
+<input type="password" id="confirmPassword" placeholder="Retype Password">
+
+<div class="captcha" id="captchaText"></div>
+
+<input type="text" id="captchaInput" placeholder="Enter CAPTCHA">
+
+<button onclick="register()">Create Account</button>
+
+<br><br>
+
+<a href="login.html">Already have an account? Login</a>
+
+</div>
+
+<script>
+
+let generatedPhoneOTP;
+let generatedEmailOTP;
+
+let phoneVerified=false;
+let emailVerified=false;
+
+let captcha=Math.floor(Math.random()*9000)+1000;
+
+document.getElementById("captchaText").innerHTML=captcha;
+
+function sendPhoneOTP(){
+
+generatedPhoneOTP=
+Math.floor(100000+Math.random()*900000);
+
+alert("Demo Phone OTP: "+generatedPhoneOTP);
+}
+
+function verifyPhoneOTP(){
+
+let otp=document.getElementById("phoneOtp").value;
+
+if(otp==generatedPhoneOTP){
+
+phoneVerified=true;
+
+document.getElementById("phoneStatus").innerHTML=
+"✅ Phone Verified";
+
+}else{
+alert("Invalid Phone OTP");
+}
+}
+
+function sendEmailOTP(){
+
+generatedEmailOTP=
+Math.floor(100000+Math.random()*900000);
+
+alert("Demo Email OTP: "+generatedEmailOTP);
+}
+
+function verifyEmailOTP(){
+
+let otp=document.getElementById("emailOtp").value;
+
+if(otp==generatedEmailOTP){
+
+emailVerified=true;
+
+document.getElementById("emailStatus").innerHTML=
+"✅ Email Verified";
+
+}else{
+alert("Invalid Email OTP");
+}
+}
+
+function register(){
+
+let name=document.getElementById("name").value;
+let phone=document.getElementById("phone").value;
+let email=document.getElementById("email").value;
+let verifyEmail=document.getElementById("verifyEmail").value;
+let password=document.getElementById("password").value;
+let confirmPassword=document.getElementById("confirmPassword").value;
+let captchaInput=document.getElementById("captchaInput").value;
+
+if(name==""){
+alert("Enter Name");
+return;
+}
+
+if(phone.length!=10){
+alert("Enter Valid Phone Number");
+return;
+}
+
+if(!phoneVerified){
+alert("Verify Phone Number First");
+return;
+}
+
+if(!emailVerified){
+alert("Verify Email First");
+return;
+}
+
+if(email!==verifyEmail){
+alert("Emails Do Not Match");
+return;
+}
+
+if(password!==confirmPassword){
+alert("Passwords Do Not Match");
+return;
+}
+
+if(captchaInput!=captcha){
+alert("Wrong CAPTCHA");
+return;
+}
+
+localStorage.setItem("email",email);
+localStorage.setItem("password",password);
+
+alert("Account Created Successfully");
+
+window.location="login.html";
+}
+
+</script>
+
+</body>
+</html>
